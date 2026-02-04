@@ -32,7 +32,7 @@ from torch.utils.tensorboard import SummaryWriter
 import utils.utils as utils
 from utils.augmented_image_loader import ImageLoader
 from propagation_model import ModelPropagate
-from utils.modules import SGD, GS, DPAC, PhysicalProp
+from utils.modules import SGD, GS, DPAC
 from holonet import HoloNet, InitialPhaseUnet, FinalPhaseOnlyUnet, PhaseOnlyUnet
 from propagation_ASM import propagation_ASM
 
@@ -92,6 +92,7 @@ writer = SummaryWriter(summaries_dir)
 
 # Hardware setup for CITL
 if opt.citl:
+    from utils.modules import PhysicalProp
     camera_prop = PhysicalProp(channel, laser_arduino=True, roi_res=(roi_res[1], roi_res[0]), slm_settle_time=0.12,
                                range_row=(220, 1000), range_col=(300, 1630),
                                patterns_path=f'F:/citl/calibration',
