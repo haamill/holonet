@@ -8,7 +8,8 @@ class PerceptualLoss(torch.nn.modules.loss._Loss):
         super(PerceptualLoss, self).__init__(True, True)
 
         # download pretrained vgg19 if necessary and instantiate it
-        vgg19 = torchvision.models.vgg.vgg19(pretrained=True)
+        # Updated for torchvision >= 0.13: use weights parameter instead of deprecated pretrained
+        vgg19 = torchvision.models.vgg19(weights=torchvision.models.VGG19_Weights.IMAGENET1K_V1)
         self.vgg_layers = vgg19.features
 
         # the vgg feature layers we want to use for the perceptual loss

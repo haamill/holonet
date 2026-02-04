@@ -433,21 +433,25 @@ def get_psnr_ssim(recon_amp, target_amp, multichannel=False):
     """get PSNR and SSIM metrics"""
     psnrs, ssims = {}, {}
 
+    # For scikit-image >= 0.19, use channel_axis instead of deprecated multichannel parameter
+    # channel_axis=-1 for multichannel images, None for grayscale
+    channel_axis = -1 if multichannel else None
+
     # amplitude
     psnrs['amp'] = psnr(target_amp, recon_amp)
-    ssims['amp'] = ssim(target_amp, recon_amp, multichannel=multichannel)
+    ssims['amp'] = ssim(target_amp, recon_amp, data_range=target_amp.max() - target_amp.min(), channel_axis=channel_axis)
 
     # linear
     target_linear = target_amp**2
     recon_linear = recon_amp**2
     psnrs['lin'] = psnr(target_linear, recon_linear)
-    ssims['lin'] = ssim(target_linear, recon_linear, multichannel=multichannel)
+    ssims['lin'] = ssim(target_linear, recon_linear, data_range=target_linear.max() - target_linear.min(), channel_axis=channel_axis)
 
     # srgb
     target_srgb = srgb_lin2gamma(np.clip(target_linear, 0.0, 1.0))
     recon_srgb = srgb_lin2gamma(np.clip(recon_linear, 0.0, 1.0))
     psnrs['srgb'] = psnr(target_srgb, recon_srgb)
-    ssims['srgb'] = ssim(target_srgb, recon_srgb, multichannel=multichannel)
+    ssims['srgb'] = ssim(target_srgb, recon_srgb, data_range=target_srgb.max() - target_srgb.min(), channel_axis=channel_axis)
 
     return psnrs, ssims
 

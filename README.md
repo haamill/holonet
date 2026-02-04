@@ -5,6 +5,15 @@
 
 This repository contains the scripts associated with the SIGGRAPH Asia 2020 paper "Neural Holography with Camera-in-the-loop Training"
 
+## Update 2024: Modern GPU Support
+This codebase has been updated to support modern GPUs (RTX 40/50 series) with the following requirements:
+- **Python**: 3.10 - 3.12
+- **PyTorch**: 2.1+ with CUDA 12.1 support
+- **torchvision**: 0.16+
+- **scikit-image**: 0.21+
+
+The code uses PyTorch's native Complex64 tensor support which is stable in PyTorch 2.x.
+
 ## Update 20201203: 
 We just released the second part of our scripts.
 
@@ -19,8 +28,13 @@ The specific updates can be found in following sections:
 
 ## Getting Started
 
-**Our code requires PyTorch >1.7.0, as it uses Complex64 type Tensors.**
-You can implement it in previous versions of PyTorch with the complex number operations implemented in ```utils/utils.py```.
+**Requirements:**
+- Python 3.10 - 3.12
+- PyTorch >= 2.1 with CUDA 12.1 (for RTX 40/50 series GPUs)
+- torchvision >= 0.16
+- scikit-image >= 0.21
+
+**Note:** This code uses PyTorch's Complex64 tensor support which is stable in PyTorch 2.x.
 
 You can set up a conda environment with all dependencies like so:
 
