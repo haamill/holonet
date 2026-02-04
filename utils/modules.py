@@ -13,10 +13,15 @@ import utils.utils as utils
 import platform
 my_os = platform.system()
 if my_os == 'Windows':
-    from utils.arduino_laser_control_module import ArduinoLaserControl
-    from utils.camera_capture_module import CameraCapture
-    from utils.calibration_module import Calibration
-    from utils.slm_display_module import SLMDisplay
+    try:
+        from utils.arduino_laser_control_module import ArduinoLaserControl
+        from utils.camera_capture_module import CameraCapture
+        from utils.calibration_module import Calibration
+        from utils.slm_display_module import SLMDisplay
+    except Exception as e:
+        CameraCapture = None
+        SLMDisplay = None
+        _HARDWARE_IMPORT_ERROR = e
 
 
 class GS(nn.Module):
@@ -308,6 +313,8 @@ class PhysicalProp(nn.Module):
                  laser_arduino=False, com_port='COM3', arduino_port_num=(6, 10, 11),
                  range_row=(200, 1000), range_col=(300, 1700),
                  patterns_path=f'F:/citl/calibration', show_preview=False):
+        if CameraCapture is None or SLMDisplay is None:
+            raise ImportError(f'Hardware modules could not be imported. {_HARDWARE_IMPORT_ERROR}')
         super(PhysicalProp, self).__init__()
 
         # 1. Connect Camera
